@@ -19,8 +19,6 @@ export const UNICHAIN_ASSET_RECOVERY_ADDRESS =
 // CSV URLs
 export const CSV_URL_SHEET1 =
     "https://docs.google.com/spreadsheets/d/1e_KOYOeBGaA5EG3Xqco6lOP_a0zV4Vrm3w5-dqFk00U/export?format=csv&gid=1121763694"; // Sky Contracts
-export const CSV_URL_SHEET2 =
-    "https://docs.google.com/spreadsheets/d/1slHR9VbZOC3wp2ZQu7YbQEQh8N57ePfVvv0w35nz60Q/export?format=csv&gid=92820546"; // Spark Contracts
 
 // AGREEMENT DETAILS
 export const PROTOCOL_NAME = "Sky";
