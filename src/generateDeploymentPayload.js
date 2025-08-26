@@ -1,17 +1,18 @@
 import { ethers } from "ethers";
 import { FACTORY_ABI } from "./abis.js";
-import { REGISTRY_ADDRESS, OWNER_ADDRESS } from "./constants.js";
 
 // Create factory interface for encoding
 const factoryInterface = new ethers.utils.Interface(FACTORY_ABI);
 
-export const PROTOCOL_NAME = "Sky";
-export const AGREEMENT_URI = "Agreement URI";
-export const CONTACT_DETAILS = {
+const OWNER_ADDRESS = "0x195a7d8610edd06e0C27c006b6970319133Cb19A";
+const REGISTRY_ADDRESS = "0x1eaCD100B0546E433fbf4d773109cAD482c34686";
+const PROTOCOL_NAME = "Sky";
+const AGREEMENT_URI = "TODO"; // TODO
+const CONTACT_DETAILS = {
     name: "",
     contact: "safeharbor@sky.money",
 };
-export const BOUNTY_TERMS = {
+const BOUNTY_TERMS = {
     bountyPercentage: 10000000, // 10%
     bountyCapUSD: 0,
     retainable: false,
@@ -22,7 +23,7 @@ export const BOUNTY_TERMS = {
 }
 
 // Helper function to generate deployment payload with empty chains
-export async function generateDeploymentPayload() {
+async function generateDeploymentPayload() {
     try {
         // Create empty details structure
         const emptyDetails = {
@@ -30,11 +31,8 @@ export async function generateDeploymentPayload() {
             contactDetails: [CONTACT_DETAILS],
             chains: [], // Empty chains array - will be populated later
             bountyTerms: BOUNTY_TERMS,
-            agreementURI: "ipfs://AGREEMENMET_URI" // Add your agreement URI
+            agreementURI: AGREEMENT_URI
         };
-
-        console.log("Registry Address", REGISTRY_ADDRESS);
-        console.log("Owner Address", OWNER_ADDRESS);
 
         // Generate the deployment payload
         const deploymentPayload = {

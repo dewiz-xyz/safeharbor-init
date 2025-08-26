@@ -1,4 +1,4 @@
-# Initial Deployment
+# Initial Deployment Script
 
 Before adoption, a single-time deploy and configuration needs to happen so Sky protocol can safely include changes to the scope within spells. The deployment will happen with the following steps:
 
@@ -20,3 +20,5 @@ Before adoption, a single-time deploy and configuration needs to happen so Sky p
 4. **Adoption**
    - On a future spell, the pause proxy will call `safeharborRegistry.adoptSafeHarbor(agreementAddress)`
    - This officially accepts the terms and initiates the validity of SafeHarbor integration
+
+
