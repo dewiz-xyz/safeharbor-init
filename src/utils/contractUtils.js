@@ -2,6 +2,7 @@ import { ethers } from "ethers";
 import {
     FACTORY_ADDRESS,
     OWNER_ADDRESS,
+    REGISTRY_ADDRESS,
     PROTOCOL_NAME,
     CONTACT_DETAILS,
     BOUNTY_TERMS,
@@ -40,8 +41,13 @@ export function createContractInstances(provider) {
 }
 
 export function generateCreatePayload(factory, emptyDetails) {
+    console.log("emptyDetails", emptyDetails);
+    console.log("OWNER_ADDRESS", OWNER_ADDRESS);
+    console.log("REGISTRY_ADDRESS", REGISTRY_ADDRESS);
+
     const createCalldata = factory.interface.encodeFunctionData("create", [
         emptyDetails,
+        REGISTRY_ADDRESS,
         OWNER_ADDRESS,
     ]);
 
