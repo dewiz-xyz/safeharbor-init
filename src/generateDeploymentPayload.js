@@ -19,7 +19,7 @@ const BOUNTY_TERMS = {
     identity: 2,
     diligenceRequirements:
         "KYC and Sanctions Screening. Sky and Stars require all eligible whitehats to undergo Know Your Customer (KYC) verification and be screened against global sanctions lists, including OFAC, UK, and EU regulations. This ensures that bounty recipients meet legal and regulatory standards before qualifying for payment. The verification process shall be conducted by a trusted third-party provider at Sky and Stars discretion, and all data is deleted, if successful, within 30 days post-verification.",
-    aggregateBountyCapUSD: 0,  // TODO: Add once legal answers with a value
+    aggregateBountyCapUSD: 10000000,  // TODO: Add once legal answers with a value
 }
 
 // Helper function to generate deployment payload with empty chains
