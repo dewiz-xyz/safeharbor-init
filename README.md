@@ -1,5 +1,4 @@
-# Initial Deployment Script
-
+# Initial Deployment Steps
 Before adoption, a single-time deploy and configuration needs to happen so Sky protocol can safely include changes to the scope within spells. The deployment will happen with the following steps:
 
 1. **EOA AgreementV2 deployment**
@@ -22,3 +21,31 @@ Before adoption, a single-time deploy and configuration needs to happen so Sky p
    - This officially accepts the terms and initiates the validity of SafeHarbor integration
 
 
+# Generate Deployment Payload
+
+To generate the deployment payload, run the following command:
+
+```bash
+npm run generate
+```
+
+This will output the calldata for deploying a new instance of the `AgreementV2` contract, with the pre-defined details, but without any chains. The output of this script is used as the first transaction on the DeployAgreement forge script.
+
+# Generate Initial Payload
+
+To generate the initial payload, run the following command:
+```bash
+npm run generate:initial
+```
+This script will generate the initial calldata for adding all the chains currently existing in the provided CSV sheet. The output of this script is used as the second transaction on the DeployAgreement forge script.
+
+
+# Validating the Agreement
+
+There are a few steps to independently validate that a given agreement can be adopted by Sky protocol.
+
+1. It has to be deployed to a transaction to known public factory.
+2. The owner of the agreement has to be PauseProxy.
+3. The output of `generate` command, on spells-mainnet repo, has to be "no updates".
+
+If all of these steps are done, the agreement can be adopted by Sky protocol.
