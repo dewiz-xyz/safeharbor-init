@@ -11,7 +11,7 @@ Before adoption, a single-time deploy and configuration needs to happen so Sky p
    - The EOA will use the reference sheet to create the initial state of the scope
    - This includes adding all necessary chains and contracts, as well as the asset recovery addresses
 
-3. **Ownership transfer to DSPause**
+3. **Ownership transfer to Pause Proxy**
 
    - After the initial setup is done, the EOA will fully transfer the ownership of the `AgreementV2` contract to the PauseProxy
    - This enables the PauseProxy to modify the scope in the future
