@@ -48,7 +48,7 @@ async function generateDeploymentPayload() {
                 emptyDetails,
                 CHAIN_VALIDATOR_ADDRESS,
                 OWNER_ADDRESS,
-                encodeBytes32String("2")
+                encodeBytes32String("1")
             ])
         };
 
