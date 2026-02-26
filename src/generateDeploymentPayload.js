@@ -1,11 +1,14 @@
-import { Interface, encodeBytes32String } from "ethers";
+import { Interface, encodeBytes32String, getAddress } from "ethers";
 import { FACTORY_ABI } from "./abis.js";
 
 // Create factory interface for encoding
 const factoryInterface = new Interface(FACTORY_ABI);
 
-// Temporary owner, will be set to the PauseProxy on the end of script execution.
-const OWNER_ADDRESS = "0xD0A99a2610671c6758cFCe21C990992B9e5f0647";
+const ownerAddressEnv = process.env.OWNER_ADDRESS;
+if (!ownerAddressEnv) {
+    throw new Error("Missing required environment variable: OWNER_ADDRESS");
+}
+const OWNER_ADDRESS = getAddress(ownerAddressEnv);
 
 // From: https://github.com/security-alliance/safe-harbor?tab=readme-ov-file#registry-addresses
 const REGISTRY_ADDRESS = "0x1eaCD100B0546E433fbf4d773109cAD482c34686";
