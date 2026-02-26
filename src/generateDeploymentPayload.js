@@ -43,12 +43,12 @@ async function generateDeploymentPayload() {
         // Generate the deployment payload
         const deploymentPayload = {
             function: "create",
-            args: [emptyDetails, CHAIN_VALIDATOR_ADDRESS, OWNER_ADDRESS, encodeBytes32String("1")],
+            args: [emptyDetails, CHAIN_VALIDATOR_ADDRESS, OWNER_ADDRESS, encodeBytes32String("2")],
             calldata: factoryInterface.encodeFunctionData("create", [
                 emptyDetails,
                 CHAIN_VALIDATOR_ADDRESS,
                 OWNER_ADDRESS,
-                encodeBytes32String("1")
+                encodeBytes32String("2")
             ])
         };
 

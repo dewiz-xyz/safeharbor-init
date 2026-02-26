@@ -9,6 +9,7 @@ const CONTRACTS_IN_SCOPE_SHEET_URL = `${WORKBOOK_URL}/export?format=csv&gid=1121
 const CHAIN_DETAILS_SHEET_URL = `${WORKBOOK_URL}/export?format=csv&gid=1620276618`;
 
 const agreementInterface = new Interface(AGREEMENTV2_ABI);
+const ETHEREUM_CAIP2_CHAIN_ID = "eip155:1";
 
 /**
  * Downloads and parses CSV from a URL.
@@ -106,9 +107,9 @@ function normalizeContractsInScope(records) {
 // --- Main Function ---
 
 /**
- * Generates the initial payload for the agreement contract by fetching and processing data
+ * Generates per-chain payloads for the agreement contract by fetching and processing data
  * from Google Sheets.
- * @returns {Promise<Object>} The encoded calldata and the structured chain data.
+ * @returns {Promise<Object>} The per-chain calldata and the structured chain data.
  */
 export async function generateInitialPayload() {
     try {
@@ -167,18 +168,93 @@ export async function generateInitialPayload() {
             };
         });
 
-        console.log(`\nGenerated payload for ${newChains.length} chains with ${newChains.reduce((total, chain) => total + chain.accounts.length, 0)} total accounts.`);
+        console.log(
+            `\nGenerated payloads for ${newChains.length} chains with ${newChains.reduce((total, chain) => total + chain.accounts.length, 0)} total accounts.`,
+        );
 
-        // 6. Encode the function call to get the final calldata
-        const calldata = agreementInterface.encodeFunctionData("addChains", [
-            newChains,
-        ]);
+        // 6. Encode a per-chain calldata for addChains([chain])
+        const perChainPayloads = [];
 
-        console.log("\n✅ --- Generated Calldata --- ✅");
-        console.log(calldata);
+        newChains.forEach((chain) => {
+            const chainName = chainDetails.name[chain.caip2ChainId];
+
+            if (chain.caip2ChainId !== ETHEREUM_CAIP2_CHAIN_ID) {
+                const calldata = agreementInterface.encodeFunctionData(
+                    "addChains",
+                    [[chain]],
+                );
+
+                perChainPayloads.push({
+                    chainName,
+                    caip2ChainId: chain.caip2ChainId,
+                    accountsCount: chain.accounts.length,
+                    method: "addChains",
+                    calldata,
+                });
+                return;
+            }
+
+            const totalAccounts = chain.accounts.length;
+            const chunkSize = Math.max(1, Math.ceil(totalAccounts / 4));
+            const chunks = [];
+
+            for (let i = 0; i < totalAccounts; i += chunkSize) {
+                chunks.push(chain.accounts.slice(i, i + chunkSize));
+            }
+
+            const firstChunk = chunks[0] ?? [];
+            const addChainCalldata = agreementInterface.encodeFunctionData(
+                "addChains",
+                [
+                    [
+                        {
+                            assetRecoveryAddress: chain.assetRecoveryAddress,
+                            accounts: firstChunk,
+                            caip2ChainId: chain.caip2ChainId,
+                        },
+                    ],
+                ],
+            );
+
+            perChainPayloads.push({
+                chainName,
+                caip2ChainId: chain.caip2ChainId,
+                accountsCount: firstChunk.length,
+                method: "addChains",
+                calldata: addChainCalldata,
+            });
+
+            chunks.slice(1).forEach((chunk) => {
+                if (chunk.length === 0) {
+                    return;
+                }
+
+                const addAccountsCalldata =
+                    agreementInterface.encodeFunctionData("addAccounts", [
+                        chain.caip2ChainId,
+                        chunk,
+                    ]);
+
+                perChainPayloads.push({
+                    chainName,
+                    caip2ChainId: chain.caip2ChainId,
+                    accountsCount: chunk.length,
+                    method: "addAccounts",
+                    calldata: addAccountsCalldata,
+                });
+            });
+        });
+
+        console.log("\n✅ --- Generated Per-Chain Calldata --- ✅");
+        perChainPayloads.forEach((payload, index) => {
+            console.log(
+                `[${index}] ${payload.chainName} (${payload.caip2ChainId}) ${payload.method} accounts=${payload.accountsCount}`,
+            );
+            console.log(payload.calldata);
+        });
         console.log("---------------------------------\n");
 
-        return { calldata, newChains };
+        return { perChainPayloads, newChains };
     } catch (error) {
         console.error("\n❌ Error generating initial payload:", error.message);
         throw error;
