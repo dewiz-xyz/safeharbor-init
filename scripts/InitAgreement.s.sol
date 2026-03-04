@@ -15,7 +15,7 @@ contract InitAgreement is Script {
     // Use the output from `npm run generate:initial` to populate INITIAL_CALLDATAS.
     function run() external {
         address agreement = vm.envAddress("AGREEMENT");
-        console.log("Loading agreement: ", agreement);
+        console.log("Initializing agreement: ", agreement);
 
         bytes[] memory initialPayloads = vm.envBytes("INITIAL_CALLDATAS", ",");
         console.log("Got ", initialPayloads.length, " initial payloads");
