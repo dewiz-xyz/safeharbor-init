@@ -11,7 +11,7 @@ if (!ownerAddressEnv) {
 const OWNER_ADDRESS = getAddress(ownerAddressEnv);
 
 // From: https://github.com/security-alliance/safe-harbor?tab=readme-ov-file#registry-addresses
-const REGISTRY_ADDRESS = "0x1eaCD100B0546E433fbf4d773109cAD482c34686";
+const SAFE_HARBOR_REGISTRY_ADDRESS = "0x1eaCD100B0546E433fbf4d773109cAD482c34686";
 const CHAIN_VALIDATOR_ADDRESS = "0xd01C76ccE414d9B0a294abAFD94feD2e0B88675D"
 
 // Values on the Atlas Edit WIP
@@ -57,6 +57,7 @@ async function generateDeploymentPayload() {
 
         console.log("\nDeployment Payload:");
         console.log(JSON.stringify(deploymentPayload, null, 2));
+        console.log(`\nDEPLOY_AGREEMENT_CALLDATA="${deploymentPayload.calldata}"`);
 
         return deploymentPayload;
     } catch (error) {

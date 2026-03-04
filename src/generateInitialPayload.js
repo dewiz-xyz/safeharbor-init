@@ -245,6 +245,7 @@ export async function generateInitialPayload() {
             });
         });
 
+        const serializedPayloads = perChainPayloads.map((payload) => payload.calldata);
         console.log("\n✅ --- Generated Per-Chain Calldata --- ✅");
         perChainPayloads.forEach((payload, index) => {
             console.log(
@@ -253,6 +254,7 @@ export async function generateInitialPayload() {
             console.log(payload.calldata);
         });
         console.log("---------------------------------\n");
+        console.log(`INITIAL_CALLDATAS=${serializedPayloads.join(",")}`);
 
         return { perChainPayloads, newChains };
     } catch (error) {
